@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Jeu Memory Simple</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; }
+        .memory-board {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+            background: #3498db;
+            color: white;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .card.flipped, .card.matched {
+            background: #2ecc71;
+            cursor: default;
+        }
+        .card.flipped {
+            color: #222;
+        }
+        .card:not(.flipped):not(.matched) {
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu Memory</h1>
+    <div class="memory-board" id="board"></div>
+    <script>
+        const symbols = [
+            'assets/chien.png',
+            'assets/chocolat.png',
+            'assets/churros.png',
+            'assets/donut.png',
+            'assets/orange.png',
+            'assets/panneau.png',
+            'assets/pizza.png',
+            'assets/pomme.png'
+        ];
+        let cards = [...symbols, ...symbols]
+            .sort(() => Math.random() - 0.5)
+            .map((symbol, i) => ({ id: i, symbol, flipped: false, matched: false }));
+
+        const board = document.getElementById('board');
+        let first = null, second = null, lock = false;
+
+        function render() {
+            board.innerHTML = '';
+            cards.forEach((card, idx) => {
+                const div = document.createElement('div');
+                div.className = 'card' + (card.flipped || card.matched ? ' flipped' : '') + (card.matched ? ' matched' : '');
+                if (card.flipped || card.matched) {
+                    const img = document.createElement('img');
+                    img.src = card.symbol;
+                    img.alt = '';
+                    img.style.width = '70px';
+                    img.style.height = '70px';
+                    div.appendChild(img);
+                }
+                div.onclick = () => flip(idx);
+                board.appendChild(div);
+            });
+        }
+
+        function flip(idx) {
+            if (lock || cards[idx].flipped || cards[idx].matched) return;
+            cards[idx].flipped = true;
+            if (!first) {
+                first = idx;
+            } else {
+                second = idx;
+                lock = true;
+                if (cards[first].symbol === cards[second].symbol) {
+                    cards[first].matched = cards[second].matched = true;
+                    setTimeout(() => {
+                        reset();
+                        render();
+                    }, 800);
+                } else {
+                    setTimeout(() => {
+                        cards[first].flipped = cards[second].flipped = false;
+                        reset();
+                        render();
+                    }, 800);
+                }
+            }
+            render();
+        }
+
+        function reset() {
+            first = null;
+            second = null;
+            lock = false;
+        }
+
+        render();
+    </script>
+</body>
+</html>
