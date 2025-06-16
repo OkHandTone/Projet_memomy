@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory-game</title>
+</head>
+<body>
+
+<main>
+    <h1>Memory Game</h1>
+    <p>Bienvenue dans le jeu de mémoire ! Trouvez les paires de cartes correspondantes.</p>
+
+    <div id="game-board">
+    </div>
+
+    <button id="start-game">Démarrer le jeu</button>
+    <button id="reset-game">Réinitialiser le jeu</button>
+
+    <div id="score">
+        <p>Score: <span id="score-value">0</span></p>
+    </div>
+</main>
+
+<style>
+    body {
+        font-family: sans-serif;
+        background-color: #f0f0f0;
+        text-align: center;
+        margin: 0;
+        padding: 1rem;
+    }
+
+    #game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 100px);
+        gap: 10px;
+        justify-content: center;
+        margin: 2rem auto;
+    }
+
+    .card {
+        width: 100px;
+        height: 100px;
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+    .card.flipped {
+        background-color: #fff;
+    }
+
+    button {
+        margin: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    #score {
+        margin-top: 1rem;
+        font-weight: bold;
+    }
+</style>
+
+<script src="script.js"></script>
+</body>
+</html>
